@@ -1,4 +1,4 @@
 cs440-sudoku
 ============
 
-Sudoku solutions
+Sudoku solution generators for CS 440
