@@ -1,6 +1,8 @@
 ''' Representation of a Sudoku puzzle.
 '''
 
+import operator
+
 from cell import Cell
 
 class Grid(object):
@@ -70,8 +72,19 @@ class Grid(object):
         nn = n * n
         return nn * nn
 
+    def replace(self, x, y, v):
+        ci = self.nn * y + x
+        return Grid(self._n, self._a[:ci] + (Cell(v),) + self._a[ci + 1:])
+
     def neighbors(self, x, y):
         if self[x, y]:
             yield self
             return
-        raise NotImplementedError
+        for v in range(self.nn):
+            if v in self.row(x):
+                continue
+            if v in self.col(y):
+                continue
+            if v in reduce(operator.add, self.square(x // n, y // n)):
+                continue
+            yield self.replace(x, y, v)
