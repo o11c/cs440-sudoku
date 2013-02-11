@@ -22,6 +22,7 @@ class Cell(object):
             if isinstance(s, int):
                 return Cell.__icache[s]
             raise TypeError
+        assert i >= 0
         c = object.__new__(cls)
         Cell.__scache[s] = c
         Cell.__icache[i] = c

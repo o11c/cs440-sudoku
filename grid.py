@@ -14,12 +14,43 @@ class Grid(object):
     def __init__(self, n, a):
         self._n = n
         self._a = tuple([Cell(x) for x in a])
-        assert len(self._a) == n * n * n * n
+        assert len(self._a) == self.nnnn
+        for c in self._a:
+            assert c.i <= self.nn
 
     def __getitem__(self, indices):
         x, y = indices
-        w = self._n * self._n
+        w = self.nn
         return self._a[w * y + x]
+
+    def row(self, x):
+        nn = self.nn
+        return self._a[nn*x : nn*x+nn]
+
+    def col(self, y):
+        nn = self.nn
+        nnnn = nn * nn
+        return self._a[y : y+nnnn : nn]
+
+    def square(self, x, y):
+        n = self._n
+        return tuple(
+                tuple(
+                    self[i, j]
+                        for j in range(y * n, y * n + n)
+                )
+                    for i in range(x * n, x * n + n)
+        )
+
+    def __str__(self):
+        nn = self.nn
+        return '\n'.join(
+            ''.join(
+                ' %s' % self[i, j]
+                    for j in range(nn)
+            )
+                for i in range(nn)
+        )
 
     def __repr__(self):
         return 'Grid(%r, %r)' % (self._n, ''.join(str(x) for x in self._a))
@@ -27,6 +58,17 @@ class Grid(object):
     @property
     def n(self):
         return self._n
+
+    @property
+    def nn(self):
+        n = self._n
+        return n * n
+
+    @property
+    def nnnn(self):
+        n = self._n
+        nn = n * n
+        return nn * nn
 
     def neighbors(self, x, y):
         if self[x, y]:
