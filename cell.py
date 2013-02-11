@@ -9,14 +9,22 @@ class Cell(object):
         Cell(s, i): define a new cell
         Cell(s) return a cached cell
     '''
-    __cache = {}
+    __icache = {}
+    __scache = {}
     __slots__ = ('_s', '_i')
 
     def __new__(cls, s, i=None):
         if i is None:
-            return Cell.__cache[s]
+            if isinstance(s, Cell):
+                return s
+            if isinstance(s, str):
+                return Cell.__scache[s]
+            if isinstance(s, int):
+                return Cell.__icache[s]
+            raise TypeError
         c = object.__new__(cls)
-        Cell.__cache[s] = c
+        Cell.__scache[s] = c
+        Cell.__icache[i] = c
         return c
 
     def __init__(self, s, i=None):
