@@ -55,6 +55,7 @@ class Cell(object):
         return 'Cell(%r, %r)' % (self._i, self._s)
 
 Cell(' ', 0)
+Cell('.', 0)
 Cell('1', 1)
 Cell('2', 2)
 Cell('3', 3)

@@ -49,9 +49,9 @@ class Grid(object):
         return '\n'.join(
             ''.join(
                 ' %s' % self[i, j]
-                    for j in range(nn)
+                    for i in range(nn)
             )
-                for i in range(nn)
+                for j in range(nn)
         )
 
     def __repr__(self):
@@ -74,7 +74,7 @@ class Grid(object):
 
     def replace(self, x, y, v):
         ci = self.nn * y + x
-        return Grid(self._n, self._a[:ci] + (Cell(v),) + self._a[ci + 1:])
+        return Grid(self._n, self._a[:ci] + (Cell(v+1),) + self._a[ci + 1:])
 
     def neighbors(self, x, y):
         if self[x, y]:
@@ -85,6 +85,6 @@ class Grid(object):
                 continue
             if v in self.col(y):
                 continue
-            if v in reduce(operator.add, self.square(x // n, y // n)):
+            if v in reduce(operator.add, self.square(x // self._n, y // self._n)):
                 continue
             yield self.replace(x, y, v)
