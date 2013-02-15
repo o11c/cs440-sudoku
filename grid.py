@@ -72,18 +72,19 @@ class Grid(object):
         nn = n * n
         return nn * nn
 
-    def replace(self, x, y, v):
+    def replace(self, x, y, cv):
         ci = self.nn * y + x
-        return Grid(self._n, self._a[:ci] + (Cell(v+1),) + self._a[ci + 1:])
+        return Grid(self._n, self._a[:ci] + (cv,) + self._a[ci + 1:])
 
     def neighbors(self, x, y):
         if self[x, y]:
             yield self
             return
         for v in range(self.nn):
-            if v in self.row(x):
+            v = Cell(v+1)
+            if v in self.row(y):
                 continue
-            if v in self.col(y):
+            if v in self.col(x):
                 continue
             if v in reduce(operator.add, self.square(x // self._n, y // self._n)):
                 continue
