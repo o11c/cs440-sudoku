@@ -15,8 +15,62 @@ def search3x3(self, rootNode):
                 stack.append(n)
     return None
 
-def action(node):
-    return []
+def action(state, secX, secY, list1):
+    """Given a node and sector indecies this function will return a list of
+       all posible solution to that sector"""
+
+    n = state.n # find boundries
+    j = secX * n
+    i = secY * n
+    jMax = j + n
+    iMax = i + n
+
+    for col in range(j, jMax): # for every column in the sector
+        for row in range(i, iMax):# for every row in the sector
+            if state[col, row].i == 0:# if that cell is empyt
+                for x in state.neighbors(col, row):# for every posible child
+                    if checkRow(x, col, row) and checkCol(x, col, row) and checkSector(x, col, row):
+                        find = 0
+                        for w in list1:
+                            if isEqual(x, list1[list1.index(w)]):# if it does not already exist
+                                find = 1
+                        if find == 0:                        
+                            if isFilled(x, secX, secY):# if the entire sector is filled in
+                                list1.append(x)# appen it to a list
+                            else:
+                                action(x, secX, secY, list1) #else recursivly call your self
+
+def isFilled(state, secX, secY):
+    """Given a state and sector cordinates return ture if sector is filled in,
+       else return false."""
+
+    n = state.n# find boundries
+    j = secX * n
+    i = secY * n
+    jMax = j + n
+    iMax = i + n
+    count = 0
+
+    for col in range(j, jMax):# for every column
+        for row in range(i, iMax):# for ever row
+            if state[col, row].i != 0:# if there is not a blank
+                count += 1
+    
+    if count < (n*n):# if the count is less than the number of cells in a sector
+        return False
+    return True
+    
+def isEqual(state1, state2):
+    """Given two states of the board check if both are the same."""
+
+    assert state1.n == state2.n # must be of equal size
+
+    for x in range(state1.nn):# for every column
+        for y in range(state1.nn):# and every row
+            if state1[x, y].i != state2[x, y].i:#if one element is out of place return false
+                return False
+
+    return True
 
 def checkRow(sudokuBoard,x,y):
     """
@@ -24,7 +78,7 @@ def checkRow(sudokuBoard,x,y):
         x = column
         y = row
     """
-    n = 3
+    n = sudokuBoard.n
     counter = 0
     selectedNum = sudokuBoard[x,y]
 
@@ -41,7 +95,7 @@ def checkCol(sudokuBoard,x,y):
         x = column
         y = row
     """
-    n = 3
+    n = sudokuBoard.n
     counter = 0
     selectedNum = sudokuBoard[x,y]
 
@@ -55,9 +109,9 @@ def checkCol(sudokuBoard,x,y):
 def componentIndex(sudokuBoard, coordinate):
     """
         Given an x or y of an element in the sudoku board,
-        it returns x or y coodinate of sector on the board
+        it returns x or y coodinate of a sector on the board
     """
-    n = 3
+    n = sudokuBoard.n
     temp = coordinate/n
     if temp < 1:
         return 0
@@ -67,7 +121,7 @@ def componentIndex(sudokuBoard, coordinate):
         return 2
 
 def checkSector(sudokuBoard, x, y):
-    n = 3
+    n = sudokuBoard.n
     counter = 0
     selectedNum = sudokuBoard[x,y]
 
@@ -90,21 +144,29 @@ def checkSector(sudokuBoard, x, y):
     return True
 
 if __name__ == "__main__":
-    board = ".94...13..............76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+    board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
     sudokuBoard = Grid(3, board)
-    print sudokuBoard
+    print sudokuBoard, '\n'
 
     """
         x = column
         y = row
     """
-    x = 3
-    y = 6
-    for myb in sudokuBoard.neighbors(x,y):
-        print '\n'
-        print myb
-        print "Row: "+str(checkRow(myb, x,y))
-        print "Col: "+str(checkCol(myb, x,y))
-        print "Valid Sector: " + str(checkSector(myb, x,y))
+    #x = 3
+    #y = 6
+    #for myb in sudokuBoard.neighbors(x,y):
+        #print '\n'
+        #print myb
+        #print "Row: "+str(checkRow(myb, x,y))
+        #print "Col: "+str(checkCol(myb, x,y))
+        #print "Valid Sector: " + str(checkSector(myb, x,y))
 
-    print sudokuBoard[x,y]
+    #print sudokuBoard[x,y]
+
+    x = []
+    action(sudokuBoard, 1, 1, x)
+    for y in x:
+        print y, '\n'
+        
+    #for x in sudokuBoard.row(0):
+        #print x, '\n'
