@@ -29,16 +29,15 @@ def action(state, secX, secY, list1):
         for row in range(i, iMax):# for every row in the sector
             if state[col, row].i == 0:# if that cell is empyt
                 for x in state.neighbors(col, row):# for every posible child
-                    if checkRow(x, col, row) and checkCol(x, col, row) and checkSector(x, col, row):
-                        find = 0
-                        for w in list1:
-                            if isEqual(x, list1[list1.index(w)]):# if it does not already exist
-                                find = 1
-                        if find == 0:                        
-                            if isFilled(x, secX, secY):# if the entire sector is filled in
-                                list1.append(x)# appen it to a list
-                            else:
-                                action(x, secX, secY, list1) #else recursivly call your self
+                    find = 0
+                    for w in list1:
+                        if isEqual(x, list1[list1.index(w)]):# if it does not already exist
+                            find = 1
+                    if find == 0:                        
+                        if isFilled(x, secX, secY):# if the entire sector is filled in
+                            list1.append(x)# appen it to a list
+                        else:
+                            action(x, secX, secY, list1) #else recursivly call your self
 
 def isFilled(state, secX, secY):
     """Given a state and sector cordinates return ture if sector is filled in,
@@ -163,10 +162,10 @@ if __name__ == "__main__":
 
     #print sudokuBoard[x,y]
 
-    x = []
-    action(sudokuBoard, 1, 1, x)
-    for y in x:
-        print y, '\n'
-        
-    #for x in sudokuBoard.row(0):
+    #x = []
+    #action(sudokuBoard, 0, 0, x)
+    #for y in x:
+        #print y, '\n'
+
+    #for x in sudokuBoard.neighbors(0,0):
         #print x, '\n'
