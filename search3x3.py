@@ -1,5 +1,7 @@
 import node
 from grid import *
+import itertools
+import sys, time
 
 def search3x3(self, rootNode):
     stack = []
@@ -9,10 +11,12 @@ def search3x3(self, rootNode):
         node = stack.pop()
         if node.depth == node.state.nn:
             return node
-        move = action(node)
+        #chooseNextSector(node.state, indexX, indexY) call function to determain were to go to next
+        action(node.state, indexX, indexY, move)#indexX and Y are the sector coordinates 
         if move != []:
             for n in move:
-                stack.append(n)
+                newNode = Node(n, node)
+                stack.append(newNode)
     return None
 
 def action(state, secX, secY, list1):
@@ -25,48 +29,40 @@ def action(state, secX, secY, list1):
     jMax = j + n
     iMax = i + n
 
+    goAgain = 0# condition for 
+
     for col in range(j, jMax): # for every column in the sector
         for row in range(i, iMax):# for every row in the sector
+            goAgain = 1
             if state[col, row].i == 0:# if that cell is empyt
+                goAgain = 0
                 for x in state.neighbors(col, row):# for every posible child
-                    find = 0
-                    for w in list1:
-                        if isEqual(x, list1[list1.index(w)]):# if it does not already exist
-                            find = 1
-                    if find == 0:                        
-                        if isFilled(x, secX, secY):# if the entire sector is filled in
-                            list1.append(x)# appen it to a list
-                        else:
-                            action(x, secX, secY, list1) #else recursivly call your self
+                    if isFilled(x, secX, secY):# if the entire sector is filled in
+                        list1.append(x)# appen it to a list
+                    else:
+                        action(x, secX, secY, list1) #else recursivly call your self
+
+            if goAgain == 0:
+                return
 
 def isFilled(state, secX, secY):
     """Given a state and sector cordinates return ture if sector is filled in,
        else return false."""
 
-    n = state.n# find boundries
-    j = secX * n
-    i = secY * n
-    jMax = j + n
-    iMax = i + n
-    count = 0
-
-    for col in range(j, jMax):# for every column
-        for row in range(i, iMax):# for ever row
-            if state[col, row].i != 0:# if there is not a blank
-                count += 1
+    if Cell(0) not in reduce(operator.add, state.square(secX, secY)):
+        return True
+    return False
     
-    if count < (n*n):# if the count is less than the number of cells in a sector
-        return False
-    return True
-    
-def isEqual(state1, state2):
+def isEqual(state1, state2, secX, secY):
     """Given two states of the board check if both are the same."""
 
     assert state1.n == state2.n # must be of equal size
+    square1 = state1.square(secX, secY)
+    square2 = state2.square(secX, secY)
 
-    for x in range(state1.nn):# for every column
-        for y in range(state1.nn):# and every row
-            if state1[x, y].i != state2[x, y].i:#if one element is out of place return false
+    for x, y in itertools.izip(square1, square2):
+        for i, j in itertools.izip(x, y):
+            if i != j:
                 return False
 
     return True
@@ -144,6 +140,7 @@ def checkSector(sudokuBoard, x, y):
 
 if __name__ == "__main__":
     board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+             
     sudokuBoard = Grid(3, board)
     print sudokuBoard, '\n'
 
@@ -162,10 +159,10 @@ if __name__ == "__main__":
 
     #print sudokuBoard[x,y]
 
-    #x = []
-    #action(sudokuBoard, 0, 0, x)
-    #for y in x:
-        #print y, '\n'
-
-    #for x in sudokuBoard.neighbors(0,0):
-        #print x, '\n'
+    x = []
+    t = time.clock()
+    action(sudokuBoard, 0, 0, x)
+    t2 = time.clock()
+    for y in x:
+        print y, '\n'
+    print t2 - t, '\n'
