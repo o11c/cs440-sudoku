@@ -1,6 +1,7 @@
 ''' Representation of a Sudoku puzzle.
 '''
 
+import array
 import operator
 
 from cell import Cell
@@ -45,14 +46,27 @@ class Grid(object):
         )
 
     def __str__(self):
-        nn = self.nn
-        return '\n'.join(
-            ''.join(
-                ' %s' % self[i, j]
-                    for i in range(nn)
-            )
-                for j in range(nn)
-        )
+        n = self._n
+        if str is bytes:
+            buf = array.array('c')
+        else:
+            buf = array.array('u')
+        for qy in range(n):
+            for y in range(qy * n, (qy + 1) * n):
+                for qx in range(n):
+                    for x in range(qx * n, (qx + 1) * n):
+                        buf.append(' ')
+                        buf.append(str(self[x, y]))
+                    buf.extend(str(' |'))
+                buf.pop()
+                buf.append('\n')
+            if qy != n - 1:
+                buf.extend('-' * (2 * n * (n + 1) - 1))
+                buf.append('\n')
+        if str is bytes:
+            return buf.tostring()
+        else:
+            return buf.tounicode()
 
     def __repr__(self):
         return 'Grid(%r, %r)' % (self._n, ''.join(str(x) for x in self._a))
