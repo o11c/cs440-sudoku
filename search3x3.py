@@ -49,9 +49,7 @@ def isFilled(state, secX, secY):
     """Given a state and sector cordinates return ture if sector is filled in,
        else return false."""
 
-    if Cell(0) not in reduce(operator.add, state.square(secX, secY)):
-        return True
-    return False
+    return (Cell(0) not in reduce(operator.add, state.square(secX, secY)))
     
 def isEqual(state1, state2, secX, secY):
     """Given two states of the board check if both are the same."""
