@@ -61,7 +61,10 @@ class Grid(object):
                 buf.pop()
                 buf.append('\n')
             if qy != n - 1:
-                buf.extend('-' * (2 * n * (n + 1) - 1))
+                for _ in range(n):
+                    buf.extend('-' * (2 * n + 1))
+                    buf.append('+')
+                buf.pop()
                 buf.append('\n')
         if str is bytes:
             return buf.tostring()
