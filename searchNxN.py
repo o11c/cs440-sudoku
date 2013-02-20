@@ -28,20 +28,20 @@ class MyPriorityQueue:
     def toList(self):
         return  self.heap
 
-def search3x3(self, rootNode):
+def search3x3(rootNode):
     stack = []
     stack.append(rootNode)
 
     while stack != []:
-        node = stack.pop()
-        if node.depth == node.state.nn:
-            return node
-        #chooseNextSector(node.state, indexX, indexY) call function to determain were to go to next
-#mostNonFilledInSector(node)
-        action(node.state, indexX, indexY, move)#indexX and Y are the sector coordinates 
+        node1 = stack.pop()
+        if node1.depth == node1.state.nn:
+            return node1
+        t = mostNonFilledInSector(node1.state)
+        move = []
+        action(node1.state, t[0], t[1], move)
         if move != []:
             for n in move:
-                newNode = Node(n, node)
+                newNode = node.Node(n, node1)
                 stack.append(newNode)
     return None
 
@@ -250,6 +250,7 @@ if __name__ == "__main__":
 
     x = []
     t = time.clock()
-
+    n = search3x3(node.Node(sudokuBoard))
+    print n, '\n'
     t2 = time.clock()
     print t2 - t, '\n'

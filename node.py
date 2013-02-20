@@ -1,7 +1,7 @@
 import grid
 
 class Node:
-    def __ini__(self, state, parent=None):
+    def __init__(self, state, parent=None):
         self.state = state
         self.parent = parent
         
@@ -9,6 +9,7 @@ class Node:
             self._depth = 0
         else:
             self._depth = parent.depth + 1
+
     def __str__(self):
         return str(self.state)
 
