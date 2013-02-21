@@ -32,7 +32,6 @@ def search3x3(rootNode):
 
     stack = []
     stack.append(rootNode)
-    global availableSectors
 
     while stack != []:
 
@@ -40,13 +39,11 @@ def search3x3(rootNode):
         """ Check for goal state """
         if node1.depth == node1.state.nn:
             return node1
-# t = diagonalSequentialFilledin(node1.state)
-#t = sequentialFilledin(node1.state)
-        t = backwardSequentialFilledin(node1.state)
-        node1.state = uniqueCandidate(node1.state)
-        if node1.depth == node1.state.nn:
-            return node1
+        # t = diagonalSequentialFilledin(node1.state)
+        #t = sequentialFilledin(node1.state)
         #t = chooseNextSec(node1.state)
+        t = backwardSequentialFilledin(node1.state)
+        #node1.state = uniqueCandidate(node1.state)
         move = []
         action(node1.state, t[0], t[1], move)
         if move != []:
