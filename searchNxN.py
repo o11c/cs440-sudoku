@@ -31,12 +31,17 @@ class MyPriorityQueue:
 def search3x3(rootNode):
     stack = []
     stack.append(rootNode)
+    global availableSectors
 
     while stack != []:
+
         node1 = stack.pop()
+        """ Check for goal state """
         if node1.depth == node1.state.nn:
             return node1
-        t = mostNonFilledInSector(node1.state)
+        t = diagonalSequentialFilledin(node1.state)
+#t = sequentialFilledin(node1.state)
+#t = backwardSequentialFilledin(node1.state)
         move = []
         action(node1.state, t[0], t[1], move)
         if move != []:
@@ -62,22 +67,22 @@ def adjacentSector(n, secX, secY):
         It creates a list of all adjacent sectors in the sector (secX,secY).
         And it's used in chooseNextSector.
     """
-#print (secX,secY)
     columnTuple = zip( [ secX for x in range(0, n-1) ], adjacentElement(n, secY) )
     rowTuple = zip( adjacentElement(n, secX) , [ secY for x in range(0, n-1) ] )
     return rowTuple + columnTuple  
 
 def chooseNextSector(state, secX, secY):
+    """
+        Gets list of adjacent nonfilled-in sector
+    """
     n = state.n # find boundries
     adjacentSector_ = adjacentSector(n, secX, secY)
     blankSector = []
-
     for x,y in adjacentSector_: # Getting rid of filled sectors
         if not isFilled(state, x, y):
             blankSector.append( (x,y) )
-
-#print (secX,secY)
     return blankSector
+
 def nonFilledInSector(state):
     n = state.n # find boundries
     allSectors = [( x, y ) for y in range(0,n) for x in range(0,n)]
@@ -88,7 +93,7 @@ def nonFilledInSector(state):
             blankSector.append( (x,y) )
     return blankSector
 
-def mostNonFilledInSector(state, sortby="max"):
+def mostNonFilledInSector(state, secX, secY):
     """
         It returns a tuple of a blank sector with the least/most
         number of adjacent blank sectors to it.
@@ -96,6 +101,7 @@ def mostNonFilledInSector(state, sortby="max"):
         To return tuple with least adjacent number of blanks, "min" has
         to be passed as the second argument. Otherwise, it returns the 
         one with the most blanks.
+    """
     """
     availableSector = []
     availableSector = nonFilledInSector(state)
@@ -107,6 +113,50 @@ def mostNonFilledInSector(state, sortby="max"):
                     myPriQueue.put( len( xy_sectors ) , (x,y))
 #print myPriQueue.toList()
                 return myPriQueue.get()
+    else:
+        return []
+        """
+
+    """
+    availableSector = chooseNextSector(state, secX, secY)
+    if availableSector != []: return availableSector[0]
+    else:
+    """
+def sequentialFilledin(state):
+    """ picking blank sectors in a sequention manner """
+    nonFilledin = nonFilledInSector(state)
+    if nonFilledin != []:
+        return nonFilledin[0]
+    else:
+        return []
+
+def backwardSequentialFilledin(state):
+    nonFilledin = nonFilledInSector(state)
+    if nonFilledin != []:
+        return nonFilledin[-1]
+    else:
+        return []
+
+"""
+def diagoalNonFilledInSector(state):
+    n = state.n # find boundries
+
+    allSectors = [( x, y ) for y in range(0,n) for x in range(0,n)]
+        
+    blankSector = []
+    for x,y in allSectors: # Getting rid of filled sectors
+        if not isFilled(state, x, y):
+            blankSector.append( (x,y) )
+
+    return blankSector
+    """
+
+def diagonalSequentialFilledin(state):
+    nonFilledin = nonFilledInSector(state)
+#nonFilledin = [ (x,x) for x in range(0, state.n) ]
+    if nonFilledin != []:
+#return nonFilledin[ ]
+        return nonFilledin[-1]
     else:
         return []
 
@@ -136,10 +186,18 @@ def action(state, secX, secY, list1):
             if goAgain == 0:
                 return
 
+def numBlankSector(state, secX, secY):
+    """ Get number of blanks on a sector """
+    count = 0
+    tupleOfCells =  reduce(operator.add, state.square(secX, secY))
+    for x in tupleOfCells:
+        if x == Cell(0):
+            count += 1
+    return count
+
 def isFilled(state, secX, secY):
     """Given a state and sector cordinates return true if sector is filled in,
        else return false."""
-
     return (Cell(0) not in reduce(operator.add, state.square(secX, secY)))
     
 def isEqual(state1, state2, secX, secY):
@@ -228,25 +286,14 @@ def checkSector(sudokuBoard, x, y):
     return True
 
 if __name__ == "__main__":
-    board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+#board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+    board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
              
     sudokuBoard = Grid(3, board)
-#print sudokuBoard, '\n'
-
     """
         x = column
         y = row
     """
-    #x = 3
-    #y = 6
-    #for myb in sudokuBoard.neighbors(x,y):
-        #print '\n'
-        #print myb
-        #print "Row: "+str(checkRow(myb, x,y))
-        #print "Col: "+str(checkCol(myb, x,y))
-        #print "Valid Sector: " + str(checkSector(myb, x,y))
-
-    #print sudokuBoard[x,y]
 
     x = []
     t = time.clock()
