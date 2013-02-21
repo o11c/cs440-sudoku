@@ -37,19 +37,16 @@ def search3x3(rootNode):
     while stack != []:
 
         node1 = stack.pop()
-<<<<<<< HEAD
         """ Check for goal state """
         if node1.depth == node1.state.nn:
             return node1
-        t = diagonalSequentialFilledin(node1.state)
+# t = diagonalSequentialFilledin(node1.state)
 #t = sequentialFilledin(node1.state)
-#t = backwardSequentialFilledin(node1.state)
-=======
+        t = backwardSequentialFilledin(node1.state)
         node1.state = uniqueCandidate(node1.state)
         if node1.depth == node1.state.nn:
             return node1
         #t = chooseNextSec(node1.state)
->>>>>>> 14f539e073a478a0c193f857e9780c402868b2be
         move = []
         action(node1.state, t[0], t[1], move)
         if move != []:
@@ -58,7 +55,6 @@ def search3x3(rootNode):
                 stack.append(newNode)
     return None
 
-<<<<<<< HEAD
 def adjacentElement(n, secComponent):
     """
         This function is used by adjacentSector to find the adject x or y coordinates
@@ -95,7 +91,12 @@ def chooseNextSector(state, secX, secY):
 def nonFilledInSector(state):
     n = state.n # find boundries
     allSectors = [( x, y ) for y in range(0,n) for x in range(0,n)]
-=======
+    blankSector = []
+    for x,y in allSectors:
+        if not isFilled(state, x, y):
+            blankSector.append( (x,y) )
+    return blankSector 
+        
 def uniqueCandidate(state):
 
     nn = state.nn
@@ -111,11 +112,9 @@ def uniqueCandidate(state):
 
             if i == 1:
                 return candidate
->>>>>>> 14f539e073a478a0c193f857e9780c402868b2be
 
     return state
 
-<<<<<<< HEAD
 def mostNonFilledInSector(state, secX, secY):
     """
         It returns a tuple of a blank sector with the least/most
@@ -182,7 +181,6 @@ def diagonalSequentialFilledin(state):
         return nonFilledin[-1]
     else:
         return []
-=======
 def chooseNextSec(state):
 
     maxCount = 0
@@ -218,7 +216,6 @@ def numAdj(state, secX, secY):
             count += 1
 
     return count - 2
->>>>>>> 14f539e073a478a0c193f857e9780c402868b2be
 
 def action(state, secX, secY, list1):
     """Given a node and sector indecies this function will return a list of
@@ -346,8 +343,8 @@ def checkSector(sudokuBoard, x, y):
     return True
 
 if __name__ == "__main__":
-#board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
-    board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
+    board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+#board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
              
     sudokuBoard = Grid(3, board)
     """
