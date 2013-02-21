@@ -29,14 +29,16 @@ class MyPriorityQueue:
         return  self.heap
 
 def search3x3(rootNode):
+
     stack = []
     stack.append(rootNode)
 
     while stack != []:
         node1 = stack.pop()
+        node1.state = uniqueCandidate(node1.state)
         if node1.depth == node1.state.nn:
             return node1
-        t = mostNonFilledInSector(node1.state)
+        #t = chooseNextSec(node1.state)
         move = []
         action(node1.state, t[0], t[1], move)
         if move != []:
@@ -45,70 +47,59 @@ def search3x3(rootNode):
                 stack.append(newNode)
     return None
 
-def adjacentElement(n, secComponent):
-    """
-        This function is used by adjacentSector to find the adject x or y coordinates
-        of a single coordinate number.
-    """
-    remainder = secComponent % n
-    if remainder != 0:
-        index = range(0,secComponent) + range(secComponent+1,n)
-    else:
-        index = range(1,n)
-    return index
+def uniqueCandidate(state):
 
-def adjacentSector(n, secX, secY):
-    """ 
-        It creates a list of all adjacent sectors in the sector (secX,secY).
-        And it's used in chooseNextSector.
-    """
-#print (secX,secY)
-    columnTuple = zip( [ secX for x in range(0, n-1) ], adjacentElement(n, secY) )
-    rowTuple = zip( adjacentElement(n, secX) , [ secY for x in range(0, n-1) ] )
-    return rowTuple + columnTuple  
+    nn = state.nn
 
-def chooseNextSector(state, secX, secY):
-    n = state.n # find boundries
-    adjacentSector_ = adjacentSector(n, secX, secY)
-    blankSector = []
+    for x in range(nn):
+        for y in range(nn):
+            i = 0
+            for z in state.neighbors(x, y):
+                i += 1
+                candidate = z
+                if i > 1:
+                    break;
 
-    for x,y in adjacentSector_: # Getting rid of filled sectors
-        if not isFilled(state, x, y):
-            blankSector.append( (x,y) )
+            if i == 1:
+                return candidate
 
-#print (secX,secY)
-    return blankSector
-def nonFilledInSector(state):
-    n = state.n # find boundries
-    allSectors = [( x, y ) for y in range(0,n) for x in range(0,n)]
+    return state
 
-    blankSector = []
-    for x,y in allSectors: # Getting rid of filled sectors
-        if not isFilled(state, x, y):
-            blankSector.append( (x,y) )
-    return blankSector
+def chooseNextSec(state):
 
-def mostNonFilledInSector(state, sortby="max"):
-    """
-        It returns a tuple of a blank sector with the least/most
-        number of adjacent blank sectors to it.
+    maxCount = 0
+    n = state.n
 
-        To return tuple with least adjacent number of blanks, "min" has
-        to be passed as the second argument. Otherwise, it returns the 
-        one with the most blanks.
-    """
-    availableSector = []
-    availableSector = nonFilledInSector(state)
-    if availableSector != []:
-                myPriQueue = MyPriorityQueue(sortby)
-                for sector in availableSector:
-                    x,y = sector
-                    xy_sectors = chooseNextSector(state, x, y)
-                    myPriQueue.put( len( xy_sectors ) , (x,y))
-#print myPriQueue.toList()
-                return myPriQueue.get()
-    else:
-        return []
+    for x in range(n):
+        for y in range(n):
+            if not isFilled(state, x, y):
+                t3 = x
+                t4 = y
+                count = numAdj(state, x, y)
+                if count > maxCount:
+                    maxCount = count
+                    t1 = x
+                    t2 = y
+
+    if maxCount == 0:
+        return (t3, t4)
+
+    return (t1, t2)
+
+def numAdj(state, secX, secY):
+
+    count = 0
+    n = state.n
+
+    for x in range(n):
+        if not isFilled(state, x, secY):
+            count += 1
+
+    for y in range(n):
+        if not isFilled(state, secX, y):
+            count += 1
+
+    return count - 2
 
 def action(state, secX, secY, list1):
     """Given a node and sector indecies this function will return a list of
@@ -251,6 +242,6 @@ if __name__ == "__main__":
     x = []
     t = time.clock()
     n = search3x3(node.Node(sudokuBoard))
-    print n, '\n'
     t2 = time.clock()
+    print n, '\n'
     print t2 - t, '\n'
