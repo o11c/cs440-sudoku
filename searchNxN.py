@@ -4,7 +4,7 @@ import itertools
 import sys, time
 
 def searchNxN(rootNode):
-    #rootNode.availableSector( nonFilledInSector( rootNode.state ) )
+    rootNode.availableSector( nonFilledInSector( rootNode.state ) )
 
     stack = []
     stack.append(rootNode)
@@ -38,7 +38,7 @@ def nonFilledInSector(state):
             blankSector.append( (x,y) )
     return blankSector 
         
-ddef uniqueCandidate(state):
+def uniqueCandidate(state):
 
     nn = state.nn
 
