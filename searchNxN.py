@@ -4,7 +4,7 @@ import itertools
 import sys, time
 
 def searchNxN(rootNode):
-    rootNode.availableSector( nonFilledInSector( rootNode.state ) )
+    #rootNode.availableSector( nonFilledInSector( rootNode.state ) )
 
     stack = []
     stack.append(rootNode)
@@ -24,7 +24,7 @@ def searchNxN(rootNode):
         if move != []:
             for n in move:
                 newNode = node.Node(n, node1)
-                newNode.availableSector( node1.nonFilledInSector[:-1] )
+                #newNode.availableSector( node1.nonFilledInSector[:-1] )
 
                 stack.append(newNode)
     return None
@@ -38,7 +38,7 @@ def nonFilledInSector(state):
             blankSector.append( (x,y) )
     return blankSector 
         
-def uniqueCandidate(state):
+ddef uniqueCandidate(state):
 
     nn = state.nn
 
@@ -46,11 +46,16 @@ def uniqueCandidate(state):
         for y in range(nn):
             i = 0
             if state[x, y].i == 0:
+                hasOne = 0
                 for z in state.neighbors(x, y):
                     i += 1
+                    hasOne = 1
                     candidate = z
                     if i > 1:
                         break;
+
+                if hasOne == 0:
+                    return None
 
                 if i == 1:
                     return candidate
@@ -193,8 +198,8 @@ def checkSector(sudokuBoard, x, y):
 
 if __name__ == "__main__":
 #board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
-#    board = "249.6...3.3....2..8.......5.....6......2......1..4.82..9.5..7....4.....1.7...3..."
-    board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
+    board = "249.6...3.3....2..8.......5.....6......2......1..4.82..9.5..7....4.....1.7...3..."
+#    board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
              
     sudokuBoard = Grid(3, board)
 
