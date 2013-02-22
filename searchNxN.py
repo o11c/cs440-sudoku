@@ -4,46 +4,20 @@ import itertools
 import sys, time
 from heapq import *
 
-class MyPriorityQueue:
-    """ This is priority queue that organizes objects in the queue in
-        this format ( priority value, object ). If "max" is pass as part
-        of the constructor, then the priority queue is a max-heap, otherwise,
-        it is a min-heap
-    """
-    def __init__(self,type_of_heap=""):
-        self.heap = []
-        if type_of_heap == "max":
-            self.type_ = -1
-        else:
-            self.type_ = 1
-    def put(self, weight, node):
-        heappush(self.heap, ( self.type_*weight, node ) )
-    def get(self):
-        priority, node = heappop(self.heap)
-        return node
-    def empty(self):
-        return ( len(self.heap) == 0 )
-    def __len__(self):
-        return len(self.heap)
-    def toList(self):
-        return  self.heap
-
 def search3x3(rootNode):
 
     stack = []
     stack.append(rootNode)
+    #node1.state = uniqueCandidate(node1.state)
 
     while stack != []:
 
         node1 = stack.pop()
-        """ Check for goal state """
-        if node1.depth == node1.state.nn:
+        if node1.depth == node1.state.nn: #Check for goal state
             return node1
-        # t = diagonalSequentialFilledin(node1.state)
         #t = sequentialFilledin(node1.state)
         #t = chooseNextSec(node1.state)
         t = backwardSequentialFilledin(node1.state)
-        #node1.state = uniqueCandidate(node1.state)
         move = []
         action(node1.state, t[0], t[1], move)
         if move != []:
@@ -112,37 +86,9 @@ def uniqueCandidate(state):
 
     return state
 
-def mostNonFilledInSector(state, secX, secY):
-    """
-        It returns a tuple of a blank sector with the least/most
-        number of adjacent blank sectors to it.
-
-        To return tuple with least adjacent number of blanks, "min" has
-        to be passed as the second argument. Otherwise, it returns the 
-        one with the most blanks.
-    """
-    """
-    availableSector = []
-    availableSector = nonFilledInSector(state)
-    if availableSector != []:
-                myPriQueue = MyPriorityQueue(sortby)
-                for sector in availableSector:
-                    x,y = sector
-                    xy_sectors = chooseNextSector(state, x, y)
-                    myPriQueue.put( len( xy_sectors ) , (x,y))
-#print myPriQueue.toList()
-                return myPriQueue.get()
-    else:
-        return []
-        """
-
-    """
-    availableSector = chooseNextSector(state, secX, secY)
-    if availableSector != []: return availableSector[0]
-    else:
-    """
 def sequentialFilledin(state):
-    """ picking blank sectors in a sequention manner """
+    """ picking blank sectors in a sequention manner.
+    i.e first, second, third sector and so on"""
     nonFilledin = nonFilledInSector(state)
     if nonFilledin != []:
         return nonFilledin[0]
@@ -152,32 +98,19 @@ def sequentialFilledin(state):
 def backwardSequentialFilledin(state):
     nonFilledin = nonFilledInSector(state)
     if nonFilledin != []:
-        return nonFilledin[-1]
-    else:
-        return []
-
-"""
-def diagoalNonFilledInSector(state):
-    n = state.n # find boundries
-
-    allSectors = [( x, y ) for y in range(0,n) for x in range(0,n)]
+        """
+        tobeReturn_blanks = state.nn
         
-    blankSector = []
-    for x,y in allSectors: # Getting rid of filled sectors
-        if not isFilled(state, x, y):
-            blankSector.append( (x,y) )
-
-    return blankSector
-    """
-
-def diagonalSequentialFilledin(state):
-    nonFilledin = nonFilledInSector(state)
-#nonFilledin = [ (x,x) for x in range(0, state.n) ]
-    if nonFilledin != []:
-#return nonFilledin[ ]
+        for x, y in nonFilledin:
+            tempNum = numBlankSector(state, x, y)
+            if tempNum < tobeReturn_blanks:
+                tobeReturn = (x,y)
+            return tobeReturn
+            """
         return nonFilledin[-1]
     else:
         return []
+
 def chooseNextSec(state):
 
     maxCount = 0
@@ -340,16 +273,12 @@ def checkSector(sudokuBoard, x, y):
     return True
 
 if __name__ == "__main__":
-    board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+#    board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+    board = "249.6...3.3....2..8.......5.....6......2......1..4.82..9.5..7....4.....1.7...3..."
 #board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
              
     sudokuBoard = Grid(3, board)
-    """
-        x = column
-        y = row
-    """
 
-    x = []
     t = time.clock()
     n = search3x3(node.Node(sudokuBoard))
     t2 = time.clock()
