@@ -24,7 +24,7 @@ def searchNxN(rootNode):
         if move != []:
             for n in move:
                 newNode = node.Node(n, node1)
-                #newNode.availableSector( node1.nonFilledInSector[:-1] )
+                newNode.availableSector( node1.nonFilledInSector[:-1] )
 
                 stack.append(newNode)
     return None
@@ -46,16 +46,11 @@ def uniqueCandidate(state):
         for y in range(nn):
             i = 0
             if state[x, y].i == 0:
-                hasOne = 0
                 for z in state.neighbors(x, y):
                     i += 1
-                    hasOne = 1
                     candidate = z
                     if i > 1:
                         break;
-
-                if hasOne == 0:
-                    return None
 
                 if i == 1:
                     return candidate
