@@ -16,3 +16,5 @@ class Node:
     @property
     def depth(self):
         return self._depth
+    def availableSector(self,nonFilledInSector):
+        self.nonFilledInSector = nonFilledInSector
