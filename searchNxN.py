@@ -12,10 +12,12 @@ def searchNxN(rootNode):
     while stack != []:
 
         node1 = stack.pop()
-        node1.state = uniqueCandidate(node1.state)
+        node1.state = findUniqueCandidate(node1.state)
         while node1.state == None:
+            if stack == []:
+                return None
             node1 = stack.pop()
-            node1.state = uniqueCandidate(node1.state)
+            node1.state = findUniqueCandidate(node1.state)
         if node1.depth == node1.state.nn: #Check for goal state
             return node1
         t = node1.nonFilledInSector[-1]
@@ -37,7 +39,18 @@ def nonFilledInSector(state):
         if not isFilled(state, x, y):
             blankSector.append( (x,y) )
     return blankSector 
-        
+
+def findUniqueCandidate(state):
+
+    newState = (state, True)
+
+    while (newState[1]):
+        newState = uniqueCandidate(newState[0])
+        if newState[0] == None:
+            return newState[0]
+
+    return newState[0]
+
 def uniqueCandidate(state):
 
     nn = state.nn
@@ -49,18 +62,18 @@ def uniqueCandidate(state):
                 hasOne = 0
                 for z in state.neighbors(x, y):
                     i += 1
-                    hasOne = 1
-                    candidate = z
                     if i > 1:
-                        break;
+                        break
+                    candidate = z
+                    hasOne = 1
 
                 if hasOne == 0:
-                    return None
+                    return (None, None)
 
                 if i == 1:
-                    return candidate
+                    return (candidate, True)
 
-    return state
+    return (state, False)
 
 def sequentialFilledin(state):
     """ picking blank sectors in a sequention manner.
@@ -87,6 +100,10 @@ def numAdj(state, secX, secY):
     return count - 2
 
 def action(state, secX, secY, list1):
+
+    if isFilled(state, secX, secY):
+        return list1.append(state)
+
     n = state.n # find boundries
     j = secX * n
     i = secY * n
@@ -197,9 +214,10 @@ def checkSector(sudokuBoard, x, y):
     return True
 
 if __name__ == "__main__":
-#board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+    #board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
     board = "249.6...3.3....2..8.......5.....6......2......1..4.82..9.5..7....4.....1.7...3..."
-#    board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
+    #board = "..35....9....1..27...28..1.738...2.............5...798.1..56...87..4....5....86.."
+    #board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
              
     sudokuBoard = Grid(3, board)
 
