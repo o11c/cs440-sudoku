@@ -61,5 +61,6 @@ if __name__ == "__main__":
         main(sys.argv[1])
     else:
         if sys.stdin.isatty():
-            print('Waiting for a puzzle from a terminal ...', file=sys.stderr)
-        main(sys.stdin.readline().strip())
+            print('Waiting for puzzle(s) from a terminal ...', file=sys.stderr)
+        for line in sys.stdin:
+            main(line.strip())
