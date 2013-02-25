@@ -28,6 +28,6 @@ The mostAdjacent method of choosing the next box is a little more complicated. T
 
 About sole candidates #sub heading#
 
-We would like to mention one other part to our implementation. This is the idea of sole candidates. In a Sudoku Puzzle there are sometimes cells were only one number can be placed there. We implemented this idea as a forward check to see if it could also improve our time.
+We would like to mention one other part to our implementation. This is the idea of sole candidates. In a Sudoku Puzzle there are sometimes cells were only one number can be placed there. This means that for any partially solved puzzle can have one or more sole candidates. If a sole candidate is found then our implementation will try to find another. This continues until either all the sole candidates have been found or it hits a cell where there are no possibilities. If the result is the latter then that branch of the search is invalid and therefore the search must then try a different path to find the solution.
 
 Experiments
