@@ -1,7 +1,10 @@
+#!/usr/bin/env python
+from __future__ import print_function
 import node
 from grid import *
 import itertools
 import sys, time
+import timeit
 
 def searchNxN(rootNode):
 
@@ -9,13 +12,13 @@ def searchNxN(rootNode):
     stack = []
     stack.append(rootNode)
 
-    while stack != []:
+    while stack:
 
         node1 = stack.pop()
         node1.state = findUniqueCandidate(node1.state)
 
         while node1.state == None:
-            if stack == []:
+            if not stack:
                 return None
             node1 = stack.pop()
             node1.state = findUniqueCandidate(node1.state)
@@ -26,8 +29,7 @@ def searchNxN(rootNode):
         t = node1.nonFilledInSector[-1]
         move = []
         action(node1.state, t[0], t[1], move)
-
-        if move != []:
+        if move:
             for n in move:
                 newNode = node.Node(n, node1)
                 newNode.availableSector(node1.nonFilledInSector[:-1])
@@ -217,16 +219,31 @@ def checkSector(sudokuBoard, x, y):
                 return False
     return True
 
-if __name__ == "__main__":
-    #board = ".94...13..........3...76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
-    #board = "249.6...3.3....2..8.......5.....6......2......1..4.82..9.5..7....4.....1.7...3..."
-    board = "..35....9....1..27...28..1.738...2.............5...798.1..56...87..4....5....86.."
-    #board = "98..2......6.3.7........4........645.7.6...1.5............7..2..579.3.....816...."
-             
-    sudokuBoard = Grid(3, board)
+def main(s):
+    for n in [2, 3, 4, 5, 6, 7]:
+        nn = n * n
+        nnnn = nn * nn
+        if len(s) == nnnn:
+            break
+    else:
+        sys.exit('bad size')
+        return
+    sudokuBoard = Grid(n, s)
+    if False:
+        print( searchNxN(node.Node(sudokuBoard)) )
+    else:
+        timer = timeit.Timer((lambda: searchNxN(node.Node(sudokuBoard)) ))
+        # adapt for different possible durations
+        for t in [10 ** 0, 10 ** 1, 10 ** 2, 10 ** 3, 10 ** 4, 10 ** 5, 10 ** 6]:
+            dur = timer.timeit(t)
+            if dur * t >= 1.0:
+                break
+        print('searchNxN:', dur)
 
-    t = time.clock()
-    n = searchNxN(node.Node(sudokuBoard))
-    t2 = time.clock()
-    print n, '\n'
-    print t2 - t, '\n'
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    else:
+        if sys.stdin.isatty():
+            print('Waiting for a puzzle from a terminal ...', file=sys.stderr)
+        main(sys.stdin.readline().strip())
