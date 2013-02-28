@@ -55,7 +55,7 @@ def main(s):
             dur = timer.timeit(t)
             if dur * t >= 1.0:
                 break
-        print('Brains:', dur)
+        print(dur)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

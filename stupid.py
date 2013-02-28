@@ -46,7 +46,8 @@ def main(s):
             dur = timer.timeit(t)
             if dur * t >= 1.0:
                 break
-        print('Stupid:', dur)
+#print('Stupid:', dur)
+        print(dur)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
