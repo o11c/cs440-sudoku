@@ -12,13 +12,13 @@
 /Author (Scott A. Wallace, Evan Dickinson, Andrew Nuxoll)
 /Keywords(Episodic Memory,Soar,Reinforcement Learning,Hidden State)
 }
-\setcounter{secnumdepth}{0}  
+\setcounter{secnumdepth}{0}
 
 \begin{document}
 \title{Sudoku Solver}
 \author{
 	Benjamin Longbons\and
-    Eric Klinginsmith \and 
+    Eric Klinginsmith \and
     Sebastian S\'{a}nchez \\
 Washington State University Vancouver \\
 14204 NE Salmon Creek Ave. \\
@@ -34,7 +34,80 @@ This document explores the performance of two separate implementations of sudoku
 
 A sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ by $ n^{2} $ grid sub divided into $ n^{2} $, n by n boxes. In the typical case $ n $ is equal to $3$ which makes the Puzzle a $9$ by $9$ grid with $9$ boxes, each box being it's own $3$ by $3$ grid. In any case, to solve the Puzzle, distinct numbers $1$ through $ n^{2} $ must be filled into every row and column of the grid so that no two numbers are in the same row, column, or box. Our implementations solve any sudoku puzzle with an $n \not\le 7$.
 
+All of our approaches use partial state.
+
+\section{Terminology}
+
+\emph{Order}: The most basic measure of a puzzle's size, labelled $ n $.
+
+\emph{Grid}: A square 2-dimensional array of Cells. Both dimensions
+of the array are $ n^2 $.
+
+\emph{Cell}: A single place that can store a number. In a partial state,
+it may also be blank.
+
+\emph{Row}: A horizontal slice of a Grid. It must contain all the
+numbers $ 1 $ to $ n^2 $ exactly once.
+
+\emph{Column}: A vertical slice of a Grid. It must contain all the
+numbers $ 1 $ to $ n^2 $ exactly once.
+
+\emph{Square}: An aligned $ n \times n $ slice of a Grid. It must contain
+all the numbers $ 1 $ to $ n^2 $ exactly once.
+
+\emph{Neighbor} of a Grid: a Grid that differs by adding a value to a
+single Cell that previously had no values. The core function in all
+solvers is to iterate over all the Neighbors of a Grid at a certain Cell.
+For convenience, the Neighbors of a Grid at a Cell that already has a value
+is sometimes defined as the same Grid.
+
 \section{Implementations}
+
+\subsection{Stupid Monkey Brains}
+
+\subsubsection{Stupid}
+The Stupid Implementation was chosen as a baseline, and simply iterates
+over every cell, and recursively checks all Neighbors at that Cell.
+
+It performs terribly when the first Cells visited are relatively
+unconstrained and it guesses wrong, but this Implementation \emph{was}
+useful to demonstrate the completeness of the general recursive approach.
+
+\subsubsection{Monkey}
+The Monkey Implementation was a deliberately naive attempt to improve on
+the efficiency of the Monkey, particularly for the worst cases, by
+statically ordering the Cells according to their initial neighbor count.
+
+Surprisingly, it actually performed worse in the few tests given to it,
+though as both implementations are very slow, it cannot be ruled out that
+the difference is just noise.
+
+This implementation also changed the algorithm slighty to skip over
+already filled cells.
+
+\subsubsection{Brains}
+The Brains Implementation was a serious attempt to continue doing the best
+thing as the puzzle iteratively got closer to solved.
+
+It works by calculating, at each step, the number of neighbors at each
+yet-unfilled cell, and choosing the one with the least number of
+possibilities.
+
+Using this, it acheives pretty good performance for most puzzles. However,
+there is still a lot of variation, so it is not yet fully optimized.
+
+\subsubsection{Possible Improvements}
+The Brains approach still suffers from two major flaws:
+
+    - It recalculates the list of best nodes every step. It would be better
+    to remember a list of most-constrained Cells and update it.
+
+    - It always calculates possible neighbors from $ 1 $ to $ 9 $.
+    This will behave badly if larger numbers are more constrained.
+
+Combined, these indicate the reason that certain puzzles take much more
+time to solve with this solver compared to the next.
+
 
 \subsection{SearchNxN Implementation}
 
