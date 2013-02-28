@@ -1,0 +1,26 @@
+Brains:
+> summary(brains)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.008   2.212   4.298   5.844   7.095  61.290
+--------------------------------
+
+searchNxN:
+> summary(searchNxN)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   2.272   3.909   6.211   7.016 240.700 
+---------------------------------------------
+
+/* Loading data */
+brains <- scan('easy_sudoku_1011_brains_stats')
+searchNxN <- scan('easy_sudoku_1011_searchNxN_stats')
+
+/* Creating a histrogram */
+p1<-hist(brains, xlim= c(0,100), breaks=seq(min(brains),
+  max(brains), length=100), xlab = "Time", ylab= "Frequency",
+  main = "Brains",
+  prob= TRUE, col= "lightblue")
+
+p2<-hist(searchNxN, xlim= c(0,100), breaks=seq(min(searchNxN),
+  max(searchNxN), length=100), xlab = "Time", ylab= "Frequency",
+  main = "searchNxN",
+  prob= TRUE, col= "lightgreen")
