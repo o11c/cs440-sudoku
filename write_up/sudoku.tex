@@ -63,10 +63,10 @@ The Stupid Implementation was chosen as a baseline, and simply iterates over eve
 The Monkey Implementation was a deliberately naive attempt to improve on the efficiency of the Monkey, particularly for the worst cases, by statically ordering the Cells according to their initial neighbor count. Surprisingly, it actually performed worse in the few tests given to it, though as both implementations are very slow, it cannot be ruled out that the difference is just noise. This implementation also changed the algorithm slightly to skip over already filled cells.
 
 \subsubsection{Brains}
-The Brains Implementation was a serious attempt to continue doing the best thing as the puzzle iteratively got closer to solved. It works by calculating, at each step, the number of neighbors at each yet-unfilled cell, and choosing the one with the least number of possibilities. Using this, it achieves pretty good performance for most puzzles. However, there is still a lot of variation, so it is not yet fully optimized.
+The \emph{Brains} Implementation was a serious attempt to continue doing the best thing as the puzzle iteratively got closer to solved. It works by calculating, at each step, the number of neighbors at each yet-unfilled cell, and choosing the one with the least number of possibilities. Using this, it achieves pretty good performance for most puzzles. However, there is still a lot of variation, so it is not yet fully optimized.
 
 \subsubsection{Possible Improvements}
-The Brains approach still suffers from two major flaws:
+The \emph{Brains} approach still suffers from two major flaws:
 \begin{itemize}
 \item It recalculates the list of best nodes every step. It would be better to remember a list of most-constrained Cells and update it.
 \item It always calculates possible neighbors from $ 1 $ to $ 9 $. This will behave badly if larger numbers are more constrained.
@@ -74,10 +74,10 @@ The Brains approach still suffers from two major flaws:
 Combined, these indicate the reason that certain puzzles take much more time to solve with this solver compared to the next.
 
 \subsection{SearchNxN Implementation}
-The SearchNxN Implementation searches for the solution by filling in one square at a time. To do this, SearchNxN first selects one of the squares to fill in. Once selected, SearchNxN will generate all possible solutions for the given square. These these solutions are added to a stack. Then for every element on the stack SearchNxN selects the next square to fill in. This process is repeated until either all squares are filled in, or the stack is empty. If all squares are filled in, then the solution is printed to stdout. Otherwise, there is no solution and \emph{false} is returned. The inspiration behind this method was taken from the common computer science problem of a three coloring. A three coloring is a problem in which when given a map with $n$ regions to color an agent finds a way to color the entire map with only three colors so that no two regions have the same two colors. If we think of the Sudoku puzzle as being a map where no two numbers can be in the same row, column, or square and each square is a region, then a so called three coloring of a Sudoku puzzle would be to "color" each square so that there are no violations where a color would be one of the possible solutions to that square.
+The \emph{SearchNxN} Implementation searches for the solution by filling in one square at a time. To do this, \emph{SearchNxN} first selects one of the squares to fill in. Once selected, \emph{SearchNxN} will generate all possible solutions for the given square. These these solutions are added to a stack. Then for every element on the stack \emph{SearchNxN} selects the next square to fill in. This process is repeated until either all squares are filled in, or the stack is empty. If all squares are filled in, then the solution is printed to stdout. Otherwise, there is no solution and \emph{false} is returned. The inspiration behind this method was taken from the common computer science problem of a three coloring. A three coloring is a problem in which when given a map with $n$ regions to color an agent finds a way to color the entire map with only three colors so that no two regions have the same two colors. If we think of the Sudoku puzzle as being a map where no two numbers can be in the same row, column, or square and each square is a region, then a so called three coloring of a Sudoku puzzle would be to "color" each square so that there are no violations where a color would be one of the possible solutions to that square.
 
 \subsubsection{About choosing a the next square}
-We would like to now talk about how SearchNxN selects the next square to fill in. There where two types of selection methods within this implementation. These are:
+We would like to now talk about how \emph{SearchNxN} selects the next square to fill in. There where two types of selection methods within this implementation. These are:
 \begin{enumerate}
 \item inOrder
 \item mostAdjacent
@@ -87,7 +87,7 @@ We would like to now talk about how SearchNxN selects the next square to fill in
 inOrder is the simplest implementation of the two. I simply fills in each square one at a time left to right top to bottom. Although this method is simple, the time complexity to get the next square is constant.
 
 \subsection{mostAdjacent}
-mostAdjacent is a little more complicated. It chooses the square that has the most unfilled squares in the same row or column as that square. For example, Figure \ref{fig:num-sudoku-puzzle} if we assume square $1$, $2$, and $8$ are filled in, then square $1$ has $3$ unfilled in squares in the same row and column has it, square $4$ has $4$ unfilled in squares, square $5$ would have $2$, and so on and so forth. This method was developed to try an eliminate the branching factor of future squares. The idea was the square with the most unfilled squares on the same row and column of it would limit the most possibilities for future squares. This supposedly would make SearchNxN faster than the inOrder method. To find out if this was true we ran some early tests and found that this was not true at all. It turns out that mostAdjacent took $30$ mins to solve v.s. inOrder which only took $2$ mins. This led us to scrap the mostAdjacent method and go with inOrder.
+mostAdjacent is a little more complicated. It chooses the square that has the most unfilled squares in the same row or column as that square. For example, Figure \ref{fig:num-sudoku-puzzle} if we assume square $1$, $2$, and $8$ are filled in, then square $1$ has $3$ unfilled in squares in the same row and column has it, square $4$ has $4$ unfilled in squares, square $5$ would have $2$, and so on and so forth. This method was developed to try an eliminate the branching factor of future squares. The idea was the square with the most unfilled squares on the same row and column of it would limit the most possibilities for future squares. This supposedly would make \emph{SearchNxN} faster than the inOrder method. To find out if this was true we ran some early tests and found that this was not true at all. It turns out that mostAdjacent took $30$ mins to solve v.s. inOrder which only took $2$ mins. This led us to scrap the mostAdjacent method and go with inOrder.
 
 \begin{figure}[h]
 	\centering
@@ -100,7 +100,7 @@ mostAdjacent is a little more complicated. It chooses the square that has the mo
 We would like to mention one other part to our implementation. This is the idea of sole candidates. In a Sudoku puzzle, there are sometimes cells where only one number can be placed there. This means that any partially solved puzzle can have one or more sole candidates. If a sole candidate is found, then our implementation will try to find another. This continues until either all the sole candidates have been found, or it hits a cell where there are no possibilities. If the result is the latter, then that branch of the search is invalid and therefore the search must then try a different path to find the solution. If there are no other branches to explore and a solution has not been found then there is no solution to the given puzzle.
 
 \subsubsection{Possible improvements}
-There are several things that could be done to improve the SearchNxN implementation. These are:
+There are several things that could be done to improve the \emph{SearchNxN} implementation. These are:
 \begin{enumerate}
 \item Find a way to select a the next square to fill in that is faster than the inOrder method.
 \item Implement an arc consistency check beyond the sole candidates.
@@ -108,15 +108,31 @@ There are several things that could be done to improve the SearchNxN implementat
 \end{enumerate}
 The above ideas are all things that could make our implementation go from okay to great.
 
+\subsubsection{Strengths and Weaknesses of both Strategies}
+
+\begin{itemize}
+  \item Strengths
+	\begin{itemize}
+	  \item Compleate and optimal
+	  \item For SearchNxN, sole candidates function makes strategy run faster by finding constraints
+	\end{itemize}
+  \item Weaknesses
+	\begin{itemize}
+	  \item Recursive function makes everything be slower.
+		\item Slow when solving Sudoku puzzles of order greater than 3 
+	\end{itemize}
+
+\end{itemize}
+
 \section{Experiments}
-Benchmarks were performed on only two strategies due to computational resource constraints. The strategies used to collect data were SearchNxN and Brains. The data collected was the time each strategy took to solve a Sudoku puzzle. The timer started before the search function in each strategy, and it stopped after the puzzle was solved. About $1300$ $3 \times 3$ Sudoku puzzles were solved using the strategies mentioned above and, outliers were eliminated from the data by taking the top 90\% of the data set sorted from lowest to highest, and were run using a computer with the following specifications.\\
+Benchmarks were performed on only two strategies due to computational resource constraints. The strategies used to collect data were \emph{SearchNxN} and \emph{Brains}. The data collected was the time each strategy took to solve a Sudoku puzzle. The timer started before the search function in each strategy, and it stopped after the puzzle was solved. About $1300$ $3 \times 3$ Sudoku puzzles were solved using the strategies mentioned above and, outliers were eliminated from the data by taking the top 90\% of the data set sorted from lowest to highest, and were run using a computer with the following specifications.\\
 
 Intel(R) Core(TM) i7-2635QM CPU @ 2.00GHz\\
 \indent Memory Ram 8 GBs\\
 \indent Linux version 2.6.32-279.19.1.el6.x86\_64
 
 \subsection{SearchNxN Performance}
-Now let's look at the performance of the SearchNxN implementation.There are several different ways we measured the performance of the SearchNxN implementation. The way we choose to look at it was the more puzzles that solved within a certain amount of time the better. Figure \ref{fig:search-time-complex-hist} shows what percentage of puzzles this method solved per time 5 second time intervale.
+Now let's look at the performance of the \emph{SearchNxN} implementation.There are several different ways we measured the performance of the \emph{SearchNxN} implementation. The way we choose to look at it was the more puzzles that solved within a certain amount of time the better. Figure \ref{fig:search-time-complex-hist} shows what percentage of puzzles this method solved per time 5 second time intervale.
 
 \begin{figure}[h]
 	\centering
@@ -168,7 +184,7 @@ As one can see the data sports the histogram by showing that the mean is right a
 
 \subsection{Brains Performance}
 
-Brains is a recursive strategy where it iterates through the whole Sudoku puzzle each time the recursive function is called, which adds overhead. The fastest time this strategy solves a puzzle is one second because finding the number of possible combinations for each cell is very expensive. The data distribution has an inverse exponential shape as you can see in Figure \ref{fig: 90_perc_brains_dist}. In addition, about $20\%$ of our sample was solved in $1$ to $2$ seconds.
+\emph{Brains} is a recursive strategy where it iterates through the whole Sudoku puzzle each time the recursive function is called, which adds overhead. The fastest time this strategy solves a puzzle is one second because finding the number of possible combinations for each cell is very expensive. The data distribution has an inverse exponential shape as you can see in Figure \ref{fig: 90_perc_brains_dist}. In addition, about $20\%$ of our sample was solved in $1$ to $2$ seconds.
 
 \begin{figure}[h]
 	\centering
@@ -191,9 +207,12 @@ Brains is a recursive strategy where it iterates through the whole Sudoku puzzle
 \end{figure}
 
 \section{Challenges}
-We experienced many challenges along our journey to solve Sudoku puzzle. The first was to come up with a reasonable way to represent the states of the board. We came up with a data structure that formed the board out of a set of chased cells. This data structure also included the ability to check what possibilities could be filled into any cell. The next challenge was to come up with possible ways of solving the problem. The decision was made early on to do a semi-brut force recursive method and also develop a original solution. These solutions where later named Brains and SearchNxN respectively. From here it was just a matter of working through the smaller challenges of improving the speed of each solution has they evolved.
+We experienced many challenges along our journey to solve Sudoku puzzle. The first was to come up with a reasonable way to represent the states of the board. We came up with a data structure that formed the board out of a set of cached cells. This data structure also included the ability to check what possibilities could be filled into any cell. \\
+
+The next challenge was to come up with possible ways of solving the problem. The decision was made early on to do a semi-brut force recursive method and also develop a original solution. These solutions where later named \emph{Brains} and \emph{SearchNxN} respectively. From here it was just a matter of working through the smaller challenges of improving the speed of each solution has they evolved.
 
 \section{Conclusions}
-Doing a partial state search is very expresive on performance because each time a cell is filled in, constraints have to be checked. In addition, performance is limited by Python because it is an interpreted language and is specific to the hardware used for this project. There are many ways to solve a Sudoku puzzle using search methods. Work still remains to be done in both search strategies. SearchNxN needs a more efficient way to select the next square in the puzzle to fill in, and adding an arc consistency to this strategy will increase performance. Moreover, Brains needs to choose a better path to avoid recalculating the list of best nodes, and thus reducing computation time. Both search strategies use recursion to fill in cells, and we believe this is why our data reveal that both strategies have about the same performance SearchNxN being the best. 
+Doing a partial state search is very expresive on performance because each time a cell is filled in, constraints have to be checked. In addition, performance is limited by Python because it is an interpreted language and is specific to the hardware used for this project. There are many ways to solve a Sudoku puzzle using search methods. Our approaches use depth-first search because we know the depth-limit for each strategy. For example, in a $3 \times 3$, \emph{SearchNxN}'s depth-limit is 9, and \emph{Brains}'s depth-limit is 81. Also, both strategies are optimal and complete. 
 
+Work still remains to be done in both search strategies. \emph{SearchNxN} needs a more efficient way to select the next square in the puzzle to fill in, and adding an arc consistency to this strategy will increase performance. Moreover, \emph{Brains} needs to choose a better path to avoid recalculating the list of best nodes, and thus reducing computation time. Both search strategies use recursion to fill in cells, and we believe this is why our data reveal that both strategies have about the same performance, \emph{SearchNxN} being the best. There is not much statistical significance between the strategies.
 \end{document}
