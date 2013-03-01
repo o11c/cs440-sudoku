@@ -1,26 +1,57 @@
-Brains:
-> summary(brains)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  1.008   2.212   4.298   5.844   7.095  61.290
---------------------------------
-
-searchNxN:
-> summary(searchNxN)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  1.000   2.272   3.909   6.211   7.016 240.700 
----------------------------------------------
-
-/* Loading data */
 brains <- scan('easy_sudoku_1011_brains_stats')
+brains_hard <- scan('2365_hard_puzzle_brains')
+searchNxN_hard <- scan('2365_hard_puzzle_searchNxN')
 searchNxN <- scan('easy_sudoku_1011_searchNxN_stats')
 
-/* Creating a histrogram */
-p1<-hist(brains, xlim= c(0,100), breaks=seq(min(brains),
-  max(brains), length=100), xlab = "Time", ylab= "Frequency",
-  main = "Brains",
-  prob= TRUE, col= "lightblue")
+summary(brains)
+summary(searchNxN)
+summary(brains_hard)
+summary(searchNxN_hard)
 
-p2<-hist(searchNxN, xlim= c(0,100), breaks=seq(min(searchNxN),
-  max(searchNxN), length=100), xlab = "Time", ylab= "Frequency",
-  main = "searchNxN",
-  prob= TRUE, col= "lightgreen")
+pdf("./brainsEasy.pdf")
+H <- hist(brains, plot=FALSE, breaks=seq(0, 80, by=5))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Brains")
+axis(1, pos=0, at=seq(0, max(brains),  by=5), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./searchNxNEasy.pdf")
+H <- hist(searchNxN, plot=FALSE, breaks=seq(0, 250, by=5))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Search NxN")
+axis(1, pos=0, at=seq(0, max(searchNxN),  by=5), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./brainsHard.pdf")
+H <- hist(brains_hard, plot=FALSE, breaks=seq(0, 1650, by=50))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Brains Hard")
+axis(1, pos=0, at=seq(0, max(brains_hard),  by=50), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./searchNxNHard.pdf")
+H <- hist(searchNxN_hard, plot=FALSE, breaks=seq(0, 1050, by=50))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Search NxN Hard")
+axis(1, pos=0, at=seq(0, max(searchNxN_hard),  by=50), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+summary(brains)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+  1.008   2.212   4.298   5.844   7.095  61.290
+ 
+summary(searchNxN)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   2.272   3.909   6.211   7.016 240.700
+
+summary(brains_hard)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   1.001    3.957    8.701   30.790   17.810 1587.000 
+
+summary(searchNxN_hard)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   1.025    3.493    6.902   26.090   13.350 1014.000

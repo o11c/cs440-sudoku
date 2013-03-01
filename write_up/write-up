@@ -1,6 +1,6 @@
 Abstract
 
-This document explores the performance of two separate implementations of Sudoku Puzzle agent and the resulting evaluation of the implementations. Each implementation is a distinct search method to solve any Sudoku puzzle. They will be evaluated based on how fast each solves a given set of puzzles. It was our goal to explore these methods to ultimately see how well they worked.
+This document explores the performance of two separate implementations of Sudoku Puzzle agents and the resulting evaluation of the implementations. Each implementation is a distinct search method to solve any Sudoku puzzle. They will be evaluated based on how fast each solves a given set of puzzles. It was our goal to explore these methods to ultimately see how well they worked.
 
 Introduction
 
