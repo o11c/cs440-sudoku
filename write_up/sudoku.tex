@@ -31,8 +31,7 @@ This document explores the performance of two separate implementations of Sudoku
 \end{abstract}
 
 \section{Introduction}
-
-A Sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ by $ n^{2} $ grid subdivided into $ n^{2} $, n by n squares. In the typical case $ n $ is equal to $3$ which makes the Puzzle a $9$ by $9$ grid with $9$ squares, each square being it's own $3$ by $3$ grid. In any case, to solve the Puzzle, distinct numbers $1$ through $ n^{2} $ must be filled into every row and column of the grid, so that no two numbers are in the same row, column, or square. Our implementations solve any Sudoku puzzle with an $n \le 7$. All of our approaches use partial state.
+A Sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ by $ n^{2} $ grid subdivided into $ n^{2} $, n by n squares. In the typical case $ n $ is equal to $3$ which makes the Puzzle a $9$ by $9$ grid with $9$ squares, each square being it's own $3$ by $3$ grid. In any case, to solve the Puzzle, distinct numbers $1$ through $ n^{2} $ must be filled into every row and column of the grid, so that no two numbers are in the same row, column, or square. Our implementations solve any Sudoku puzzle with an $n \le 7$. Since the beginning Sudoku puzzles have challenged many people with there simple concepts, yet complex possibilities. It was our vision to come up with a partial state solution to the common Sudoku puzzle that not only solved puzzles, but solved them in a reasonable amount of time.
 
 \begin{figure}[h]
 	\centering
@@ -186,10 +185,13 @@ Brains is a recursive strategy where it iterates through the whole Sudoku puzzle
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=100mm]{./Top90Brains.pdf}
+	\includegraphics[width=100mm]{../stats/Top90Brains.pdf}
 	\caption{Top 90\% of Brains}
 	\label{fig: 90_perc_brains_dist}
 \end{figure}
+
+\section{Challenges}
+We experienced many challenges along our journey to solve Sudoku puzzle. The first was to come up with a reasonable way to represent the states of the board. We came up with a data structure that formed the board out of a set of chased cells. This data structure also included the ability to check what possibilities could be filled into any cell. The next challenge was to come up with possible ways of solving the problem. The decision was made early on to do a semi-brut force recursive method and also develop a original solution. These solutions where later named Brains and SearchNxN respectively. From here it was just a matter of working through the smaller challenges of improving the speed of each solution has they evolved.
 
 \section{Conclusions}
 Doing a partial state search is very expresive on performance because each time a cell is filled in, constraints have to be checked. In addition, performance is limited by Python because it is an interpreted language and is specific to the hardware used for this project. There are many ways to solve a Sudoku puzzle using search methods. Work still remains to be done in both search strategies. SearchNxN needs a more efficient way to select the next square in the puzzle to fill in, and adding an arc consistency to this strategy will increase performance. Moreover, Brains needs to choose a better path to avoid recalculating the list of best nodes, and thus reducing computation time. Both search strategies use recursion to fill in cells, and we believe this is why our data reveal that both strategies have about the same performance SearchNxN being the best.
