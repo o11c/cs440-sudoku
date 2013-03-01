@@ -104,28 +104,63 @@ We would like to mention one other part to our implementation. This is the idea 
 There are several things that could be done to improve the SearchNxN implementation. These are:
 \begin{enumerate}
 \item Find a way to select a new the next square to fill in that is faster than the inOrder method.
-\item Implement a arc consistency check beyond the sole candidates.
+\item Implement an arc consistency check beyond the sole candidates.
 \item Work on getting parts of the existing code to be more efficient by making critical functions less redundant. 
 \end{enumerate}
 The above ideas are all things that could make our implementation go from okay to great.
 
 \section{Experiments}
+Benchmarks were performed on only two strategies due to computational resource constraints. The strategies used to collect data were SearchNxN and Brains. The data collected was the time each strategy took to solve a Sudoku puzzle. The timer started before the search function in each strategy, and it stopped after the puzzle was solved. About $1300$ $3 \times 3$ Sudoku puzzles were solved using the strategies mentioned above and, outliers were eliminated from the data by taking the top 90\% of the data set sorted from lowest to highest, and were run using a computer with the following specifications.\\
+
+Intel(R) Core(TM) i7-2635QM CPU @ 2.00GHz\\
+\indent Memory Ram 8 GBs\\
+\indent Linux version 2.6.32-279.19.1.el6.x86\_64
 
 \subsection{SearchNxN Performance}
 Now lets look at the performance of the SearchNxN implementation.There are several different ways we measured the performance of the SearchNxN implementation.
 
-\begin{tabular}{|l|l|l|l|l|l|}
-\hline
-Min. & 1st Qu.  & Median & Mean & 3rd Qu. & Max.\\
-\hline
-1.008 & 2.212 & 4.298 & 5.844 & 7.095 & 61.290\\
-\hline
-\end{tabular}
-
 \subsection{Brains Performance}
+
+Brains is a recursive strategy where it iterates through the whole Sudoku puzzle each time the recursive function is called, which adds overhead. The fastest time this strategy solves a puzzle is one second because finding the number of possible combinations for each cell is very expensive. The data distribution has an inverse exponential shape as you can see in Figure \ref{fig: 90_perc_brains_dist}. In addition, about $20\%$ of our sample was solved in $1$ to $2$ seconds.
+
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		Min. & 1st Qu.  & Median & Mean & 3rd Qu. & Max.\\
+		\hline
+		  1.001  & 2.251 &  4.334  & 5.125 & 7.112 & 16.380\\
+		\hline
+	\end{tabular}
+	\caption{Descriptive Statistics for Top 90\% of Brains}
+	\label{fig: 90_perc_brains_table}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=100mm]{./Top90Brains.pdf}
+	\caption{Top 90\% of Brains}
+	\label{fig: 90_perc_brains_dist}
+\end{figure}
 
 \subsubsection{Comparing the two}
 
 \section{Conclusions}
+Doing a partial state search is very expresive because each time a cell is filled in constraints have to be checked.
+
+Conclusion
+	Checking that cells satifies constraints is a very expensive operation And constraints have to be check every time a numeber is added.
+	
+	The perfomance is constrainted by hardware and Python language as it is an interpreted language.
+	Take away message:
+		There are many ways to solve a Sudoku puzzles using search methods. 
+	Future work:
+		Finding other ways to check constraints without 
+		searchNxN:
+			Finding a more effient way to select a square in the puzzle.
+			Add an arc consistency to the puzzle.
+		Brains:
+			Choosing a better path to avoid recalculating the list of best nodes.
+
 
 \end{document}
