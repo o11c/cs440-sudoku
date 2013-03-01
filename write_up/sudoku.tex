@@ -117,7 +117,7 @@ Intel(R) Core(TM) i7-2635QM CPU @ 2.00GHz\\
 \indent Linux version 2.6.32-279.19.1.el6.x86\_64
 
 \subsection{SearchNxN Performance}
-Now lets look at the performance of the SearchNxN implementation.There are several different ways we measured the performance of the SearchNxN implementation. The way we choose to look at it was the more puzzles that solved within a certain amount of time the better. Figure \ref{fig:search-time-complex-hist} shows what percentage of puzzles this method solved per time 5 second time intervale.
+Now let's look at the performance of the SearchNxN implementation.There are several different ways we measured the performance of the SearchNxN implementation. The way we choose to look at it was the more puzzles that solved within a certain amount of time the better. Figure \ref{fig:search-time-complex-hist} shows what percentage of puzzles this method solved per time 5 second time intervale.
 
 \begin{figure}[h]
 	\centering
@@ -165,7 +165,7 @@ Min. & 1st Qu.  & Median & Mean & 3rd Qu. & Max.\\
 \label{tab:SearchNxNTab2}
 \end{table}
 
-As one can see the data sports the Histogram by showing that the mean is right around $5$ seconds and the Max is right around $14$.
+As one can see the data sports the histogram by showing that the mean is right around $5$ seconds and the maximum is right around $14$.
 
 \subsection{Brains Performance}
 
@@ -192,21 +192,6 @@ Brains is a recursive strategy where it iterates through the whole Sudoku puzzle
 \end{figure}
 
 \section{Conclusions}
-Doing a partial state search is very expresive because each time a cell is filled in constraints have to be checked.
-
-Conclusion
-	Checking that cells satifies constraints is a very expensive operation And constraints have to be check every time a numeber is added.
-	
-	The perfomance is constrainted by hardware and Python language as it is an interpreted language.
-	Take away message:
-		There are many ways to solve a Sudoku puzzles using search methods. 
-	Future work:
-		Finding other ways to check constraints without 
-		searchNxN:
-			Finding a more effient way to select a square in the puzzle.
-			Add an arc consistency to the puzzle.
-		Brains:
-			Choosing a better path to avoid recalculating the list of best nodes.
-
+Doing a partial state search is very expresive on performance because each time a cell is filled in, constraints have to be checked. In addition, performance is limited by Python because it is an interpreted language and is specific to the hardware used for this project. There are many ways to solve a Sudoku puzzle using search methods. Work still remains to be done in both search strategies. SearchNxN needs a more efficient way to select the next square in the puzzle to fill in, and adding an arc consistency to this strategy will increase performance. Moreover, Brains needs to choose a better path to avoid recalculating the list of best nodes, and thus reducing computation time. Both search strategies use recursion to fill in cells, and we believe this is why our data reveal that both strategies have about the same performance SearchNxN being the best.
 
 \end{document}
