@@ -7,35 +7,20 @@ import timeit
 
 import grid
 
-def best_move(g):
-    """
-        Finds cell with the list number of possibilities
-    """
-    nn = g.nn
-    best = None
-    best_cost = nn + 1
-    for x in range(nn): # Iterate through all cells
-        for y in range(nn):
-            if not g[x, y]: # If the cell is empty
-                branch_count = len(list(g.neighbors(x, y))) # All possible numbers on (x,y)
-                if branch_count == 1: 
-                    return x,y
-                if branch_count < best_cost:
-                    best = x,y
-                    best_cost = branch_count # (x,y) with the least number of possibilities
-    return best # returns None if all cells are filled
-
-def solve(g):
-    """
-        Recursive function that fills in sudoku puzzle by the least number of possibilities.
-    """
-    m = best_move(g)
-    if m is None: # Base case: All cells are filled
-        return g
-    x,y = m
+def solve(g, x=0, y=0):
+    nx = x + 1
+    ny = y
+    if nx == g.nn:
+        nx = 0
+        ny = y + 1
+        if ny == g.nn:
+            # grid will be fully filled
+            for gn in g.neighbors(x, y):
+                return gn
+            return None
 
     for gn in g.neighbors(x, y):
-        gns = solve(gn)
+        gns = solve(gn, nx, ny)
         if gns is not None:
             return gns
     return None
@@ -61,6 +46,7 @@ def main(s):
             dur = timer.timeit(t)
             if dur * t >= 1.0:
                 break
+#print('Stupid:', dur)
         print(dur)
 
 if __name__ == "__main__":
