@@ -14,6 +14,10 @@ class Node:
         return str(self.state)
 
     @property
+    def board(self):
+        return self.state.board
+
+    @property
     def depth(self):
         return self._depth
     def availableSector(self,nonFilledInSector):

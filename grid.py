@@ -45,6 +45,7 @@ class Grid(object):
                     for i in range(x * n, x * n + n)
         )
 
+
     def __str__(self):
         n = self._n
         if str is bytes:
@@ -66,6 +67,23 @@ class Grid(object):
                     buf.append('+')
                 buf.pop()
                 buf.append('\n')
+        if str is bytes:
+            return buf.tostring()
+        else:
+            return buf.tounicode()
+
+    @property
+    def board(self):
+        n = self._n
+        if str is bytes:
+            buf = array.array('c')
+        else:
+            buf = array.array('u')
+        for qy in range(n):
+            for y in range(qy * n, (qy + 1) * n):
+                for qx in range(n):
+                    for x in range(qx * n, (qx + 1) * n):
+                        buf.append(str(self[x, y]))
         if str is bytes:
             return buf.tostring()
         else:
