@@ -13,23 +13,6 @@ import monkey
 import stupid
 
 def main(s,flag):
-    if flag == "-a":
-        chosenStrategy = "searchNxN"
-        strategy = searchNxN.searchNxN
-    elif flag == "-b":
-        chosenStrategy = "brains"
-        strategy = brains.solve
-    elif flag == "-c":
-        chosenStrategy = "monkey"
-        strategy = monkey.solve
-    elif flag == "-d":
-        chosenStrategy = "stupid"
-        strategy = stupid.solve
-    else:
-        sys.stderr.write("Strategy '%s' doesn't exist\n" % flag)
-        program_usage()
-
-    print("Strategy %s was chosen:\n" % chosenStrategy)
 
     for n in [2, 3, 4, 5, 6, 7]:
         nn = n * n
@@ -43,11 +26,38 @@ def main(s,flag):
     if False:
         print( strategy(node.Node(sudokuBoard)) )
     else:
+        if flag == "-a":
+            chosenStrategy = "searchNxN"
             a = time.clock()
             solvedPuzzle = searchNxN.searchNxN(node.Node(sudokuBoard))
             b = time.clock()
-            print(solvedPuzzle)
-            print ("%f seconds" % ( b-a ) )
+
+        elif flag == "-b":
+            chosenStrategy = "brains"
+            a = time.clock()
+            solvedPuzzle = brains.solve(sudokuBoard)
+            b = time.clock()
+
+        elif flag == "-c":
+            chosenStrategy = "monkey"
+            a = time.clock()
+            solvedPuzzle = monkey.solve(sudokuBoard)
+            b = time.clock()
+
+        elif flag == "-d":
+            chosenStrategy = "stupid"
+            a = time.clock()
+            solvedPuzzle = stupid.solve(sudokuBoard)
+            b = time.clock()
+
+        else:
+            sys.stderr.write("Strategy '%s' doesn't exist\n" % flag)
+            program_usage()
+
+#print("Strategy %s was chosen:\n" % chosenStrategy)
+#        print(solvedPuzzle)
+#        print ("%f seconds" % ( b-a ) )
+        print(solvedPuzzle.board)
 
 def program_usage():
     sys.stderr.write("Usage: %s -flag\n" % sys.argv[0])
@@ -58,10 +68,16 @@ def program_usage():
                         "\t stupid:\t-d\n");
     sys.exit(1)
 
+def flagExit(flag):
+    if not (flag == "-a" or flag == "-b" or flag == "-c" or flag == "-d"):
+        program_usage()
+
 if __name__ == "__main__":
     if not len(sys.argv) == 2: # Checking if one flag was passed
         program_usage()
     flag = sys.argv[1]
+    flagExit(flag) # Checks if flag exists
+
     if sys.stdin.isatty(): # If puzzle is typed instead of piped into the program
         print('Waiting for a puzzle from a terminal ...', file=sys.stderr)
     for line in sys.stdin:
