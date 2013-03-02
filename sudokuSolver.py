@@ -73,11 +73,17 @@ def program_usage():
                         "\t monkey:\t-c\n"
                         "\t stupid:\t-d\n");
     sys.exit(1)
+
+def flagExit(flag):
+    if not (flag == "-a" or flag == "-b" or flag == "-c" or flag == "-d"):
+        program_usage()
+
 if __name__ == "__main__":
     if not len(sys.argv) == 2: # Checking if one flag was passed
         program_usage()
-        
     flag = sys.argv[1]
+    flagExit(flag) # Checks if flag exists
+
     if sys.stdin.isatty(): # If puzzle is typed instead of piped into the program
         print('Waiting for a puzzle from a terminal ...', file=sys.stderr)
     for line in sys.stdin:
