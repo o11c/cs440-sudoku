@@ -2,11 +2,23 @@ brains <- scan('easy_sudoku_1011_brains_stats')
 brains_hard <- scan('2365_hard_puzzle_brains')
 searchNxN_hard <- scan('2365_hard_puzzle_searchNxN')
 searchNxN <- scan('easy_sudoku_1011_searchNxN_stats')
+complete_searchNxN <- scan('complete_searchNxN')
+complete_brains <- scan('complete_brains')
+complete99_searchNxN <- scan('top99_searchNxN')
+complete99_brains <- scan('top99_brains')
+complete90_searchNxN <- scan('top90_searchNxN')
+complete90_brains <- scan('top90_brains')
 
 summary(brains)
 summary(searchNxN)
 summary(brains_hard)
 summary(searchNxN_hard)
+summary(complete_searchNxN)
+summary(complete_brains)
+summary(complete99_searchNxN)
+summary(complete99_brains)
+summary(complete90_searchNxN)
+summary(complete90_brains)
 
 pdf("./brainsEasy.pdf")
 H <- hist(brains, plot=FALSE, breaks=seq(0, 80, by=5))
@@ -40,18 +52,90 @@ axis(1, pos=0, at=seq(0, max(searchNxN_hard),  by=50), las=1)
 axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
 dev.off()
 
+pdf("./brainsComplete.pdf")
+H <- hist(complete_brains, plot=FALSE, breaks=seq(0, 1650, by=50))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Brains Complete")
+axis(1, pos=0, at=seq(0, max(complete_brains),  by=50), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./searchNxNComplete.pdf")
+H <- hist(complete_searchNxN, plot=FALSE, breaks=seq(0, 1050, by=50))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Search NxN Complete")
+axis(1, pos=0, at=seq(0, max(complete_searchNxN),  by=50), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./Top99Brains.pdf")
+H <- hist(complete99_brains, plot=FALSE, breaks=seq(0, 100, by=5))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Top 99% of brains")
+axis(1, pos=0, at=seq(0, max(complete99_brains),  by=5), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./Top99SearchNxN.pdf")
+H <- hist(complete99_searchNxN, plot=FALSE, breaks=seq(0, 125, by=5))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Top 99% of searchNxN")
+axis(1, pos=0, at=seq(0, max(complete99_searchNxN),  by=5), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.04), las=1)
+dev.off()
+
+pdf("./Top90Brains.pdf")
+H <- hist(complete90_brains, plot=FALSE, breaks=seq(0, 20, by=1))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Top 90% of brains")
+axis(1, pos=0, at=seq(0, max(complete90_brains),  by=1), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.02), las=1)
+dev.off()
+
+pdf("./Top90SearchNxN.pdf")
+H <- hist(complete90_searchNxN, plot=FALSE, breaks=seq(0, 20, by=1))
+H$density <- with(H, density* diff(breaks)[1])
+plot(H, freq = FALSE, col="lightblue", axes=FALSE, xlab= "Time",main="Top 90% of searchNxN")
+axis(1, pos=0, at=seq(0, max(complete90_searchNxN),  by=1), las=1)
+axis(2, pos=0, at=seq(0, 1, by=.02), las=1)
+dev.off()
+
 summary(brains)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   1.008   2.212   4.298   5.844   7.095  61.290
- 
+
 summary(searchNxN)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   1.000   2.272   3.909   6.211   7.016 240.700
 
 summary(brains_hard)
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-   1.001    3.957    8.701   30.790   17.810 1587.000 
+   1.001    3.957    8.701   30.790   17.810 1587.000
 
 summary(searchNxN_hard)
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
    1.025    3.493    6.902   26.090   13.350 1014.000
+
+summary(complete_searchNxN)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   1.000    2.444    4.403   10.920    7.870 1014.000
+
+summary(complete_brains)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   1.001    2.465    4.822   11.760    8.352 1587.000
+
+summary(complete99_searchNxN)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   2.409   4.336   6.913   7.739 105.700
+
+summary(complete99_brains)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.001   2.452   4.760   7.443   8.188  88.700
+
+summary(complete90_searchNxN)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.000   2.298   3.870   4.705   6.747  13.830
+
+summary(complete90_brains)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.001   2.251   4.334   5.125   7.112  16.380
