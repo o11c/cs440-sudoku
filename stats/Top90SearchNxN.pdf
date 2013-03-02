@@ -2,8 +2,8 @@
 %Å‚Å„ÅœÅ”\r
 1 0 obj
 <<
-/CreationDate (D:20130302021103)
-/ModDate (D:20130302021103)
+/CreationDate (D:20130302021736)
+/ModDate (D:20130302021736)
 /Title (R Graphics Output)
 /Producer (R 2.13.1)
 /Creator (R)
@@ -127,11 +127,56 @@ ET
 BT
 /F2 1 Tf 12.00 0.00 -0.00 12.00 317.33 61.28 Tm (13) Tj
 ET
+74.40 87.20 m 74.40 444.96 l S
+74.40 87.20 m 67.20 87.20 l S
+74.40 120.84 m 67.20 120.84 l S
+74.40 154.48 m 67.20 154.48 l S
+74.40 188.12 m 67.20 188.12 l S
+74.40 221.75 m 67.20 221.75 l S
+74.40 255.39 m 67.20 255.39 l S
+74.40 289.03 m 67.20 289.03 l S
+74.40 322.67 m 67.20 322.67 l S
+74.40 356.31 m 67.20 356.31 l S
+74.40 389.95 m 67.20 389.95 l S
+74.40 423.59 m 67.20 423.59 l S
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 82.89 Tm (0.00) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 116.53 Tm (0.02) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 150.17 Tm (0.04) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 183.81 Tm (0.06) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 217.45 Tm (0.08) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 251.09 Tm (0.10) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 284.72 Tm (0.12) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 318.36 Tm (0.14) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 352.00 Tm (0.16) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 385.64 Tm (0.18) Tj
+ET
+BT
+/F2 1 Tf 12.00 0.00 -0.00 12.00 36.65 419.28 Tm (0.20) Tj
+ET
 Q
 endstream
 endobj
 9 0 obj
-2309
+3393
 endobj
 3 0 obj
 <<
@@ -348,62 +393,6 @@ d7 5c d7 e0 d8 64 d8 e8 d9 6c d9 f1 da 76 da fb
 db 80 dc 05 dc 8a dd 10 dd 96 de 1c de a2 df 29
 df af e0 36 e0 bd e1 44 e1 cc e2 53 e2 db e3 63
 e3 eb e4 73 e4 fc e5 84 e6 0d e6 96 e7 1f e7 a9
-e8 32 e8 bc e9 46 e9 d0 ea 5b ea e5 eb 70 eb fb
-ec 86 ed 11 ed 9c ee 28 ee b4 ef 40 ef cc f0 58
-f0 e5 f1 72 f1 ff f2 8c f3 19 f3 a7 f4 34 f4 c2
-f5 50 f5 de f6 6d f6 fb f7 8a f8 19 f8 a8 f9 38
-f9 c7 fa 57 fa e7 fb 77 fc 07 fc 98 fd 29 fd ba
-fe 4b fe dc ff 6d ff ff >
-endstream
-endobj
-10 0 obj
-<<
-/Type /Encoding
-/BaseEncoding /WinAnsiEncoding
-/Differences [ 45/minus 96/quoteleft
-144/dotlessi /grave /acute /circumflex /tilde /macron /breve /dotaccent
-/dieresis /.notdef /ring /cedilla /.notdef /hungarumlaut /ogonek /caron /space]
->>
-endobj
-11 0 obj <<
-/Type /Font
-/Subtype /Type1
-/Name /F2
-/BaseFont /Helvetica
-/Encoding 10 0 R
->> endobj
-12 0 obj <<
-/Type /Font
-/Subtype /Type1
-/Name /F3
-/BaseFont /Helvetica-Bold
-/Encoding 10 0 R
->> endobj
-xref
-0 13
-0000000000 65535 f 
-0000000021 00000 n 
-0000000164 00000 n 
-0000002674 00000 n 
-0000002757 00000 n 
-0000002880 00000 n 
-0000002913 00000 n 
-0000000213 00000 n 
-0000000293 00000 n 
-0000002654 00000 n 
-0000012449 00000 n 
-0000012707 00000 n 
-0000012805 00000 n 
-trailer
-<<
-/Size 13
-/Info 1 0 R
-/Root 2 0 R
->>
-startxref
-12908
-%%EOF
-a9
 e8 32 e8 bc e9 46 e9 d0 ea 5b ea e5 eb 70 eb fb
 ec 86 ed 11 ed 9c ee 28 ee b4 ef 40 ef cc f0 58
 f0 e5 f1 72 f1 ff f2 8c f3 19 f3 a7 f4 34 f4 c2
