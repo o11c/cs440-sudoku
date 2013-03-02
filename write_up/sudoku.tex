@@ -32,7 +32,7 @@ This document explores the performance of two separate implementations of Sudoku
 
 \section{Introduction}
 
-A Sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ by $ n^{2} $ grid sub divided into $ n^{2} $, n by n squares. In the typical case $ n $ is equal to $3$ which makes the Puzzle a $9$ by $9$ grid with $9$ squares, each square being it's own $3$ by $3$ grid. In any case, to solve the Puzzle, distinct numbers $1$ through $ n^{2} $ must be filled into every row and column of the grid so that no two numbers are in the same row, column, or square. Our implementations solve any Sudoku puzzle with an $n \le 7$. All of our approaches use partial state.
+A Sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ by $ n^{2} $ grid subdivided into $ n^{2} $, n by n squares. In the typical case $ n $ is equal to $3$ which makes the Puzzle a $9$ by $9$ grid with $9$ squares, each square being it's own $3$ by $3$ grid. In any case, to solve the Puzzle, distinct numbers $1$ through $ n^{2} $ must be filled into every row and column of the grid, so that no two numbers are in the same row, column, or square. Our implementations solve any Sudoku puzzle with an $n \le 7$. All of our approaches use partial state.
 
 \begin{figure}[h]
 	\centering
@@ -44,7 +44,7 @@ A Sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ 
 \section{Terminology}
 
 \begin{itemize}
-\item \emph{Order}: The most basic measure of a puzzle's size, labeled $ n $.
+\item \emph{Order}: The most basic measure of a puzzle's size, labeled $n$.
 \item \emph{Grid}: A square 2-dimensional array of Cells. Both dimensions of the array are $ n^2 $.
 \item \emph{Cell}: A single place that can store a number. In a partial state, it may also be blank.
 \item \emph{Row}: A horizontal slice of a Grid. It must contain all the numbers $ 1 $ to $ n^2 $ exactly once.
@@ -82,11 +82,17 @@ We would like to now talk about how SearchNxN selects the next square to fill in
 \begin{enumerate}
 \item inOrder
 \item mostAdjacent
-\end{enumerate} 
+\end{enumerate}
+
+\subsubsection{inOrder}
+inOrder is the simplest implementation of the two. I simply fills in each square one at a time left to right top to bottom. Although this method is simple, the time complexity to get the next square is constant.
+
+\subsection{mostAdjacent}
+mostAdjacent is a little more complicated. It chooses the square that has the most unfilled squares in the same row or column as that square. For example, Figure \ref{fig:num-sudoku-puzzle} if we assume square $1$, $2$, and $8$ are filled in, then square $1$ has $3$ unfilled in squares in the same row and column has it, square $4$ has $4$ unfilled in squares, square $5$ would have $2$, and so on and so forth. This method was developed to try an eliminate the branching factor of future squares. The idea was the square with the most unfilled squares on the same row and column of it would limit the most possibilities for future squares. This supposedly would make SearchNxN faster than the inOrder method. To find out if this was true we ran some early tests and found that this was not true at all. It turns out that mostAdjacent took $30$ mins to solve v.s. inOrder which only took $2$ mins. This led us to scrap the mostAdjacent method and go with inOrder.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=60mm]{./test.png}
+	\includegraphics[width=60mm]{./numBox.png}
 	\caption{Numbered Sudoku Puzzle}
 	\label{fig:num-sudoku-puzzle}
 \end{figure}
@@ -94,17 +100,19 @@ We would like to now talk about how SearchNxN selects the next square to fill in
 \subsubsection{About sole candidates}
 We would like to mention one other part to our implementation. This is the idea of sole candidates. In a Sudoku puzzle, there are sometimes cells where only one number can be placed there. This means that any partially solved puzzle can have one or more sole candidates. If a sole candidate is found, then our implementation will try to find another. This continues until either all the sole candidates have been found, or it hits a cell where there are no possibilities. If the result is the latter, then that branch of the search is invalid and therefore the search must then try a different path to find the solution. If there are no other branches to explore and a solution has not been found then there is no solution to the given puzzle.
 
+\subsubsection{Possible improvements}
+There are several things that could be done to improve the SearchNxN implementation. These are:
+\begin{enumerate}
+\item Find a way to select a new the next square to fill in that is faster than the inOrder method.
+\item Implement a arc consistency check beyond the sole candidates.
+\item Work on getting parts of the existing code to be more efficient by making critical functions less redundant. 
+\end{enumerate}
+The above ideas are all things that could make our implementation go from okay to great.
+
 \section{Experiments}
 
 \subsection{SearchNxN Performance}
 Now lets look at the performance of the SearchNxN implementation.There are several different ways we measured the performance of the SearchNxN implementation.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=60mm]{./brains_stats.jpg}
-    \caption{Histogram for Brains Strategy}
-    \label{fig:brains-strategy}
-\end{figure}
 
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
