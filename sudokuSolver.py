@@ -47,25 +47,23 @@ def main(s,flag):
             a = time.clock()
             solvedPuzzle = searchNxN.searchNxN(node.Node(sudokuBoard))
             b = time.clock()
-            print(solvedPuzzle)
 
         elif strategy == 1:
             a = time.clock()
             solvedPuzzle = brains.solve(sudokuBoard)
             b = time.clock()
-            print(solvedPuzzle)
 
         elif strategy == 2:
             a = time.clock()
             solvedPuzzle = monkey.solve(sudokuBoard)
             b = time.clock()
-            print(solvedPuzzle)
 
         elif strategy == 3:
             a = time.clock()
             solvedPuzzle = stupid.solve(sudokuBoard)
             b = time.clock()
-            print(solvedPuzzle)
+
+        print(solvedPuzzle.board)
 
 def program_usage():
     sys.stderr.write("Usage: %s -flag\n" % sys.argv[0])
