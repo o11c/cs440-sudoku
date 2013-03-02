@@ -54,13 +54,13 @@ A Sudoku puzzle like the one in Figure \ref{fig:sudoku-puzzle} is any $ n^{2} $ 
 
 \section{Implementations}
 
-\subsection{Stupid Monkey Brains}
+\subsection{BrutForce, BrutForce2.0, Brains}
 
-\subsubsection{Stupid}
-The Stupid Implementation was chosen as a baseline, and simply iterates over every cell, and recursively checks all Neighbors at that Cell. It performs terribly when the first Cells visited are relatively unconstrained and it guesses wrong, but this Implementation \emph{was} useful to demonstrate the completeness of the general recursive approach.
+\subsubsection{BrutForce}
+The BrutForce Implementation was chosen as a baseline, and simply iterates over every cell, and recursively checks all Neighbors at that Cell. It performs terribly when the first Cells visited are relatively unconstrained and it guesses wrong, but this Implementation \emph{was} useful to demonstrate the completeness of the general recursive approach.
 
-\subsubsection{Monkey}
-The Monkey Implementation was a deliberately naive attempt to improve on the efficiency of the Monkey, particularly for the worst cases, by statically ordering the Cells according to their initial neighbor count. Surprisingly, it actually performed worse in the few tests given to it, though as both implementations are very slow, it cannot be ruled out that the difference is just noise. This implementation also changed the algorithm slightly to skip over already filled cells.
+\subsubsection{BrutForce2.0}
+The BrutForce2.0 Implementation was a deliberately naive attempt to improve on the efficiency of the BrutForce, particularly for the worst cases, by statically ordering the Cells according to their initial neighbor count. Surprisingly, it actually performed worse in the few tests given to it, though as both implementations are very slow, it cannot be ruled out that the difference is just noise. This implementation also changed the algorithm slightly to skip over already filled cells.
 
 \subsubsection{Brains}
 The \emph{Brains} Implementation was a serious attempt to continue doing the best thing as the puzzle iteratively got closer to solved. It works by calculating, at each step, the number of neighbors at each yet-unfilled cell, and choosing the one with the least number of possibilities. Using this, it achieves pretty good performance for most puzzles. However, there is still a lot of variation, so it is not yet fully optimized.
