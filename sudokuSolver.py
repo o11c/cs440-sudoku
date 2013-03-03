@@ -15,21 +15,21 @@ import stupid
 def main(s,flag):
     if flag == "-a":
         chosenStrategy = "searchNxN"
-        strategy = searchNxN.searchNxN
+        strategy = 0
     elif flag == "-b":
         chosenStrategy = "brains"
-        strategy = brains.solve
+        strategy = 1
     elif flag == "-c":
         chosenStrategy = "monkey"
-        strategy = monkey.solve
+        strategy = 2
     elif flag == "-d":
         chosenStrategy = "stupid"
-        strategy = stupid.solve
+        strategy = 3
     else:
         sys.stderr.write("Strategy '%s' doesn't exist\n" % flag)
         program_usage()
 
-    print("Strategy %s was chosen:\n" % chosenStrategy)
+    #print("Strategy %s was chosen:\n" % chosenStrategy)
 
     for n in [2, 3, 4, 5, 6, 7]:
         nn = n * n
@@ -43,11 +43,29 @@ def main(s,flag):
     if False:
         print( strategy(node.Node(sudokuBoard)) )
     else:
+        if strategy == 0:
             a = time.clock()
             solvedPuzzle = searchNxN.searchNxN(node.Node(sudokuBoard))
             b = time.clock()
             print(solvedPuzzle)
-            print ("%f seconds" % ( b-a ) )
+
+        elif strategy == 1:
+            a = time.clock()
+            solvedPuzzle = brains.solve(sudokuBoard)
+            b = time.clock()
+            print(solvedPuzzle)
+
+        elif strategy == 2:
+            a = time.clock()
+            solvedPuzzle = monkey.solve(sudokuBoard)
+            b = time.clock()
+            print(solvedPuzzle)
+
+        elif strategy == 3:
+            a = time.clock()
+            solvedPuzzle = stupid.solve(sudokuBoard)
+            b = time.clock()
+            print(solvedPuzzle)
 
 def program_usage():
     sys.stderr.write("Usage: %s -flag\n" % sys.argv[0])
